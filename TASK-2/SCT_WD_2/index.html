@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCalc - Sleek Modern Calculator</title>
+  <meta name="description" content="An elegant, modern glassmorphic web calculator with real-time operations, full keyboard support, calculation history, and smooth animations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <main class="calculator-container" id="calculatorApp" aria-label="NovaCalc Calculator">
+    <!-- Calculator Header -->
+    <header class="calculator-header">
+      <h1 class="logo">NovaCalc</h1>
+      <div class="header-controls">
+        <button id="historyToggleBtn" class="control-btn" title="View History" aria-label="Toggle history panel">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </button>
+        <button id="themeToggleBtn" class="control-btn" title="Toggle Theme" aria-label="Toggle light and dark theme">
+          <!-- Sun Icon for switching to light mode / Moon for switching to dark mode -->
+          <svg class="icon sun-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="icon moon-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Calculator Display Screen -->
+    <section class="calculator-screen" aria-live="polite">
+      <div id="equationDisplay" class="screen-equation" aria-label="Expression history"></div>
+      <div id="inputDisplay" class="screen-input" aria-label="Current input" tabindex="0">0</div>
+    </section>
+
+    <!-- Calculator Keyboard/Grid -->
+    <section class="calculator-grid" aria-label="Keypad">
+      <!-- Row 1: Clear, Backspace, Percent, Divide -->
+      <button class="calc-btn btn-action" id="key-clear" data-action="clear" aria-label="Clear all">C</button>
+      <button class="calc-btn btn-action" id="key-backspace" data-action="backspace" aria-label="Delete last digit">⌫</button>
+      <button class="calc-btn btn-action" id="key-percent" data-action="percent" aria-label="Percentage">%</button>
+      <button class="calc-btn btn-operator" id="key-divide" data-operator="/" aria-label="Divide">÷</button>
+
+      <!-- Row 2: 7, 8, 9, Multiply -->
+      <button class="calc-btn btn-digit" id="key-7" data-val="7">7</button>
+      <button class="calc-btn btn-digit" id="key-8" data-val="8">8</button>
+      <button class="calc-btn btn-digit" id="key-9" data-val="9">9</button>
+      <button class="calc-btn btn-operator" id="key-multiply" data-operator="*" aria-label="Multiply">×</button>
+
+      <!-- Row 3: 4, 5, 6, Subtract -->
+      <button class="calc-btn btn-digit" id="key-4" data-val="4">4</button>
+      <button class="calc-btn btn-digit" id="key-5" data-val="5">5</button>
+      <button class="calc-btn btn-digit" id="key-6" data-val="6">6</button>
+      <button class="calc-btn btn-operator" id="key-subtract" data-operator="-" aria-label="Subtract">−</button>
+
+      <!-- Row 4: 1, 2, 3, Add -->
+      <button class="calc-btn btn-digit" id="key-1" data-val="1">1</button>
+      <button class="calc-btn btn-digit" id="key-2" data-val="2">2</button>
+      <button class="calc-btn btn-digit" id="key-3" data-val="3">3</button>
+      <button class="calc-btn btn-operator" id="key-add" data-operator="+" aria-label="Add">+</button>
+
+      <!-- Row 5: Plus/Minus, 0, Decimal, Equal -->
+      <button class="calc-btn btn-action" id="key-toggle-sign" data-action="toggle-sign" aria-label="Toggle positive negative">±</button>
+      <button class="calc-btn btn-digit" id="key-0" data-val="0">0</button>
+      <button class="calc-btn btn-digit" id="key-decimal" data-val=".">.</button>
+      <button class="calc-btn btn-equal" id="key-equals" data-action="calculate" aria-label="Equals">=</button>
+    </section>
+
+    <!-- Sliding History Drawer -->
+    <aside class="history-drawer" id="historyDrawer" aria-label="Calculation history panel">
+      <div class="drawer-header">
+        <h2>History</h2>
+        <button id="historyCloseBtn" class="control-btn" aria-label="Close history panel">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="history-list-container">
+        <ul id="historyList" class="history-list">
+          <!-- Populated by JS -->
+          <li class="history-empty-msg">No history yet</li>
+        </ul>
+      </div>
+      <div class="drawer-footer">
+        <button id="clearHistoryBtn" class="clear-history-btn">Clear All History</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
